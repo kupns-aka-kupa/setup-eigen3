@@ -1,0 +1,15 @@
+name: 'Setup Eigen3'
+description: 'Setup workflow with Eigen3'
+inputs:
+  version:
+    description: 'Eigen3 version'
+    required: false
+    default: latest
+outputs:
+  time:
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.version }}

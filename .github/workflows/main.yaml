@@ -1,0 +1,33 @@
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build_test_project:
+    runs-on: ubuntu-latest
+    name: Build project with Eigen3
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Eigen3
+        uses: ./
+        id: install-eigen3
+        with:
+          version: 3.4.0
+
+      - name: Get the output time
+        run: |
+          echo "The time was ${{ steps.install-eigen3.outputs.time }}"
+          ls /usr/include/eigen3
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/build
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE/tests -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+      - name: Build
+        working-directory: ${{github.workspace}}/build
+        run: cmake --build . --config $BUILD_TYPE
