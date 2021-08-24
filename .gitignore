@@ -130,3 +130,4 @@ dmypy.json
 
 cmake-build-*
 .idea
+eigen*

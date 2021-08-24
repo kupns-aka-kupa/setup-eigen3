@@ -1,3 +1,4 @@
+name: Test Eigen3 setup
 on: [push]
 
 env:
@@ -16,10 +17,8 @@ jobs:
         with:
           version: 3.4.0
 
-      - name: Get the output time
-        run: |
-          echo "The time was ${{ steps.install-eigen3.outputs.time }}"
-          ls /usr/include/eigen3
+      - name: Check Eigen cmake module
+        run: cmake --find-package -DNAME=Eigen3 -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=EXIST -DCMAKE_MODULE_PATH=${Eigen3_DIR}
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/build
