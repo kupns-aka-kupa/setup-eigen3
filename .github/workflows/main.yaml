@@ -6,8 +6,12 @@ env:
 
 jobs:
   build_test_project:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     name: Build project with Eigen3
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -17,8 +21,8 @@ jobs:
         with:
           version: 3.4.0
 
-#      - name: Check Eigen cmake module
-#        run: cmake --find-package -DNAME=Eigen3 -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=EXIST -DCMAKE_MODULE_PATH=${Eigen3_DIR}
+      - name: Check Eigen cmake module
+        run: cmake --find-package -DNAME=Eigen3 -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=EXIST
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/build

@@ -5,8 +5,13 @@ inputs:
     description: 'Eigen3 version'
     required: false
     default: latest
+branding:
+  icon: 'archive'
+  color: 'green'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.version }}
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/deps.sh
+      shell: bash
+    - run: ${{ github.action_path }}/entrypoint.sh ${{ inputs.version }}
+      shell: bash
