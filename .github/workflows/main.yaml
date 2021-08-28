@@ -19,6 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+
       - name: Install Eigen3
         uses: ./
         id: install-eigen3
@@ -26,6 +29,7 @@ jobs:
           CMAKE_GENERATOR: ${{ matrix.gen }}
         with:
           version: 3.4.0
+
       - name: Check Eigen cmake module
         run: cmake --find-package -DNAME=Eigen3 -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=EXIST
 
