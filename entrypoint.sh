@@ -36,7 +36,12 @@ debug "Installing ${version} release..."
 
 release_source=$(curl -s "${gitlab}/${project_id}/releases/${version}" | jq -rc '.assets.sources[] | select( .format == "tar.gz" ).url')
 
-wget -qO- "${release_source}" | tar -xvz > /dev/null
+if ! command -v wget &> /dev/null
+then
+  curl -L "${release_source}" | tar -xvz > /dev/null
+else
+  wget -qO- "${release_source}" | tar -xvz > /dev/null
+fi
 
 eigen_install_dir="${GITHUB_WORKSPACE}/Eigen3"
 eigen_dir="eigen-${version}"

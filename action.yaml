@@ -11,7 +11,7 @@ branding:
 runs:
   using: "composite"
   steps:
-    - run: ${{ github.action_path }}/deps.sh
+    - run: ${GITHUB_ACTION_PATH}/deps.sh
       shell: bash
-    - run: ${{ github.action_path }}/entrypoint.sh ${{ inputs.version }}
+    - run: ${GITHUB_ACTION_PATH}/entrypoint.sh ${{ inputs.version }}
       shell: bash

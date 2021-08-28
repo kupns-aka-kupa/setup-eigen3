@@ -10,14 +10,23 @@ jobs:
     name: Build project with Eigen3
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
+        include:
+          - os: windows-latest
+            gen: MinGW Makefiles
+
+          - os: ubuntu-latest
+            gen: Ninja
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Install Eigen3
         uses: ./
         id: install-eigen3
+        env:
+          CMAKE_GENERATOR: ${{ matrix.gen }}
         with:
           version: 3.4.0
 
@@ -29,8 +38,8 @@ jobs:
 
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE/tests -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+        run: cmake ${{github.workspace}}/tests -DCMAKE_BUILD_TYPE=$BUILD_TYPE -G "${{ matrix.gen }}"
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config $BUILD_TYPE
+        run: cmake --build .

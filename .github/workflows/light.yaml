@@ -1,0 +1,25 @@
+name: Default Eigen3 setup without extra args
+
+on: [pull_request]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build_test_project:
+    runs-on: ${{ matrix.os }}
+    name: Build project with Eigen3
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Eigen3
+        uses: ./
+        id: install-eigen3
+
+      - name: Check Eigen cmake module
+        run: cmake --find-package -DNAME=Eigen3 -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=EXIST
