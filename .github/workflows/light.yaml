@@ -1,6 +1,8 @@
 name: Default Eigen3 setup without extra args
 
-on: [pull_request]
+on:
+  - push
+  - workflow_dispatch
 
 env:
   BUILD_TYPE: Release
